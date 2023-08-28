@@ -8,7 +8,9 @@ import org.apache.logging.log4j.message.Message;
 import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.swing.*;
 import java.util.List;
+import java.util.Optional;
 
 public class CompanyServices {
     @Autowired
@@ -26,25 +28,60 @@ public class CompanyServices {
         }
     }
 
-    public Company editCompany(Integer Id, Company dataModify) throws Exception {
-        return null;
-        //    throw new Exception(Message.);
+    public Company editCompany(Integer id, Company dataModify) throws Exception {
+
+    try {
+        if (!this.companyValidation.nameValidation(dataModify.getName())){
+            throw new Exception(MessageEnum.INVALID_LENGTH_MAYOR_THIRTY.getMessage());
+        }
+      Optional<Company> companyFound =  this.companyRepository.findById(id);
+        if (companyFound.isEmpty()){
+            throw new Exception(MessageEnum.COMPANY_NOT_FOUND.getMessage());
+        }
+        Company companyExists = companyFound.get();
+        companyExists.setName(dataModify.getName());
+      return  ( this.companyRepository.save(companyExists));
+    } catch (Exception error) {
+        throw new Exception(error.getMessage());
+    }
     }
 
-    public Company searchCompanyById(Integer Id) throws Exception{
-        return null;
-        //    throw new Exception(Message.);
+    public Company searchCompanyById(Integer id) throws Exception{
+     try {
+        Optional<Company> optionalCompany = this.companyRepository.findById(id);
+        if(optionalCompany.isEmpty()){
+          throw new Exception(MessageEnum.COMPANY_NOT_FOUND.getMessage());
+        }
+         return optionalCompany.get();
+     }catch (Exception error){
+         throw new Exception(error.getMessage());
+     }
     }
 
     public List<Company> searchAllCompanys () throws  Exception{
-        return null;
-        //    throw new Exception(Message.);
+     try {
+       List<Company> companyList = this.companyRepository.findAll();
+       return companyList;
+     }catch ( Exception error){
+         throw new Exception(error.getMessage());
+     }
     }
 
     public  Boolean deleteCompany (Integer id) throws Exception{
 
-        return true;
-        //    throw new Exception(Message.);
+      try {
+
+          Optional<Company> optionalCompany = this.companyRepository.findById(id);
+          if (optionalCompany.isPresent()){
+              this.companyRepository.deleteById(id);
+              return true;
+          } else {
+              throw new Exception(MessageEnum.COMPANY_NOT_FOUND.getMessage());
+          }
+
+      }catch (Exception error){
+          throw new Exception(error.getMessage());
+      }
     }
 }
 
