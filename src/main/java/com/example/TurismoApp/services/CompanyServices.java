@@ -7,11 +7,12 @@ import com.example.TurismoApp.util.validations.CompanyValidation;
 import org.apache.logging.log4j.message.Message;
 import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class CompanyServices {
     @Autowired
      CompanyRepository companyRepository;

@@ -6,6 +6,7 @@ import com.example.TurismoApp.repositories.OfferRepository;
 import com.example.TurismoApp.util.MessageEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
 
 public class OfferServices {
@@ -42,13 +43,37 @@ public class OfferServices {
 
     public Offer searchOfferById(Integer id) throws Exception {
         try {
-        Optional<Offer> offerFound = this.offerRepository.findById(id);
-        if (offerFound.isEmpty()) {
-            throw new Exception(MessageEnum.OFFER_NOT_FOUND.getMessage());
+            Optional<Offer> offerFound = this.offerRepository.findById(id);
+            if (offerFound.isEmpty()) {
+                throw new Exception(MessageEnum.OFFER_NOT_FOUND.getMessage());
+            }
+            return offerFound.get();
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
         }
-        return offerFound.get();
-    }catch(Exception error){
-        throw new Exception(error.getMessage());
     }
-}
+    public List<Offer> searchAllOffers () throws  Exception{
+        try {
+            List<Offer> offerList = this.offerRepository.findAll();
+            return offerList;
+        }catch ( Exception error){
+            throw new Exception(error.getMessage());
+        }
+    }
+
+    public Boolean deleteOffer (Integer id) throws Exception {
+        try {
+            Optional<Offer> optionalOffer = this.offerRepository.findById(id);
+            if (optionalOffer.isPresent()) {
+                this.offerRepository.deleteById(id);
+                return true;
+            } else {
+                throw new Exception(MessageEnum.OFFER_NOT_FOUND.getMessage());
+            }
+
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
+
+    }
 }
