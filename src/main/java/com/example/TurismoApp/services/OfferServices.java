@@ -5,10 +5,11 @@ import com.example.TurismoApp.models.Offer;
 import com.example.TurismoApp.repositories.OfferRepository;
 import com.example.TurismoApp.util.MessageEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class OfferServices {
 
     @Autowired

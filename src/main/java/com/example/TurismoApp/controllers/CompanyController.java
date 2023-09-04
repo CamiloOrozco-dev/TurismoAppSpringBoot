@@ -4,11 +4,12 @@ import com.example.TurismoApp.models.Company;
 import com.example.TurismoApp.repositories.CompanyRepository;
 import com.example.TurismoApp.services.CompanyServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/companys")
+@RequestMapping("/company")
 public class CompanyController {
 
     @Autowired
@@ -17,27 +18,71 @@ public class CompanyController {
     @Autowired
     CompanyRepository companyRepository;
 @PostMapping
-    public ResponseEntity <?> registerCompany(@RequestBody Company dataToRegister){
-    return null;
+    public ResponseEntity <?> registerCompany(@RequestBody Company dataToRegister) throws Exception {
+    try {
+        return  ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.companyServices.registerCompany(dataToRegister));
+    } catch (Exception error){
+        return  ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(error.getMessage());
+    }
 
     }
-    @PutMapping ()
+    @PutMapping ("{idCompany}")
     public  ResponseEntity <?> editCompany(@RequestBody Company newDataModify, @PathVariable Integer idCompany){
-    return null;
+        try {
+            return  ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(this.companyServices.editCompany( idCompany, newDataModify));
+        } catch (Exception error){
+            return  ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(error.getMessage());
+        }
 
     }
-    @GetMapping
+    @GetMapping ("{idCompany}")
     public ResponseEntity<?> searchCompanyById (@PathVariable Integer idCompany){
-    return null;
+
+        try {
+            return  ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(this.companyServices.searchCompanyById( idCompany));
+        } catch (Exception error){
+            return  ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(error.getMessage());
+        }
     }
     @GetMapping
     public  ResponseEntity <?> searchAllCompanys (){
-    return null;
+
+
+        try {
+            return  ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(this.companyServices.searchAllCompanys());
+        } catch (Exception error){
+            return  ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(error.getMessage());
+        }
     }
 
-    @DeleteMapping
+    @DeleteMapping ("{idCompany}")
 
     public ResponseEntity <?> deleteCompany (@PathVariable Integer idCompany){
-        return null;
+
+        try {
+            return  ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(this.companyServices.deleteCompany( idCompany));
+        } catch (Exception error){
+            return  ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(error.getMessage());
+        }
     }
 }
